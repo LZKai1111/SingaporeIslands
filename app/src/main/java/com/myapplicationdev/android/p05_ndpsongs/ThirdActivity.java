@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ public class ThirdActivity extends AppCompatActivity {
     RadioButton rb1, rb2, rb3, rb4, rb5;
     Button btnCancel, btnUpdate, btnDelete;
     RadioGroup rg;
+    RatingBar ratingBar;
 
 
     @Override
@@ -26,12 +28,7 @@ public class ThirdActivity extends AppCompatActivity {
 
         setTitle(getTitle().toString() + " ~ " + getResources().getText(R.string.title_activity_third));
 
-        rb1 = (RadioButton) findViewById(R.id.radio1);
-        rb2 = (RadioButton) findViewById(R.id.radio2);
-        rb3 = (RadioButton) findViewById(R.id.radio3);
-        rb4 = (RadioButton) findViewById(R.id.radio4);
-        rb5 = (RadioButton) findViewById(R.id.radio5);
-        rg = (RadioGroup) findViewById(R.id.rgStars);
+
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnDelete = (Button) findViewById(R.id.btnDelete);
         btnUpdate = (Button) findViewById(R.id.btnUpdate);
@@ -39,6 +36,7 @@ public class ThirdActivity extends AppCompatActivity {
         etTitle = (EditText) findViewById(R.id.etTitle);
         etSingers = (EditText) findViewById(R.id.etSingers);
         etYear = (EditText) findViewById(R.id.etYear);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         Intent i = getIntent();
         final Song currentSong = (Song) i.getSerializableExtra("song");
@@ -47,17 +45,7 @@ public class ThirdActivity extends AppCompatActivity {
         etTitle.setText(currentSong.getTitle());
         etSingers.setText(currentSong.getSingers());
         etYear.setText(currentSong.getYearReleased()+"");
-        switch (currentSong.getStars()){
-            case 5: rb5.setChecked(true);
-                    break;
-            case 4: rb4.setChecked(true);
-                    break;
-            case 3: rb3.setChecked(true);
-                    break;
-            case 2: rb2.setChecked(true);
-                    break;
-            case 1: rb1.setChecked(true);
-        }
+        ratingBar.setRating(currentSong.getStars());
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,9 +62,10 @@ public class ThirdActivity extends AppCompatActivity {
                 }
                 currentSong.setYearReleased(year);
 
-                int selectedRB = rg.getCheckedRadioButtonId();
-                RadioButton rb = (RadioButton) findViewById(selectedRB);
-                currentSong.setStars(Integer.parseInt(rb.getText().toString()));
+                ///int selectedRB = rg.getCheckedRadioButtonId();
+                ///RadioButton rb = (RadioButton) findViewById(selectedRB);
+                ///currentSong.setStars(Integer.parseInt(rb.getText().toString()));
+                currentSong.setStars((int) ratingBar.getRating());
                 int result = dbh.updateSong(currentSong);
                 if (result>0){
                     Toast.makeText(ThirdActivity.this, "Song updated", Toast.LENGTH_SHORT).show();

@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,8 +39,10 @@ public class CustomAdapter extends ArrayAdapter {
         // Obtain the UI components and do the necessary binding
         TextView tvName = rowView.findViewById(R.id.tvTitle);
         TextView tvYear= rowView.findViewById(R.id.tvYear);
-        TextView tvStar = rowView.findViewById(R.id.tvStars);
+        ///TextView tvStar = rowView.findViewById(R.id.tvStars);
+        RatingBar ratingBar = rowView.findViewById(R.id.ratingBar);
         TextView tvSinger = rowView.findViewById(R.id.tvSinger);
+        ImageView imageView = rowView.findViewById(R.id.imageView);
 
         // Obtain the Android Version information based on the position
         Song currentVersion = versionList.get(position);
@@ -47,10 +51,18 @@ public class CustomAdapter extends ArrayAdapter {
         tvName.setText(currentVersion.getTitle());
         tvName.setTextColor(Color.BLUE);
         tvYear.setText(currentVersion.getYearcustom());
-        tvStar.setText(currentVersion.toString());
-        tvStar.setTextColor( Color.RED);
         tvSinger.setText(currentVersion.getSingers());
         tvSinger.setTextColor(Color.CYAN);
+        if(currentVersion.getYearReleased() > 2018){
+            imageView.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageView.setVisibility(View.GONE);
+        }
+
+        //tvStar.setText(currentVersion.toString());
+        //tvStar.setTextColor( Color.RED);
+        ratingBar.setRating(currentVersion.getStars());
 
         return rowView;
     }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
     EditText etTitle, etSingers, etYear;
     Button btnInsert, btnShowList;
-    RadioGroup rg;
-
+    ///RadioGroup rg;
+    RatingBar ratingBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         etYear = (EditText) findViewById(R.id.etYear);
         btnInsert = (Button) findViewById(R.id.btnInsertSong);
         btnShowList = (Button) findViewById(R.id.btnShowList);
-        rg = (RadioGroup) findViewById(R.id.rgStars);
-
+        ///rg = (RadioGroup) findViewById(R.id.rgStars);
+        ratingBar = findViewById(R.id.ratingBar);
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
                 DBHelper dbh = new DBHelper(MainActivity.this);
 
-                int stars = getStars();
+                ///int stars = getStars();
+                int stars = (int)ratingBar.getRating();
                 dbh.insertSong(title, singers, year, stars);
                 dbh.close();
                 Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+/*
     private int getStars() {
         int stars = 1;
         switch (rg.getCheckedRadioButtonId()) {
@@ -97,5 +99,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return stars;
     }
-
+*/
 }
