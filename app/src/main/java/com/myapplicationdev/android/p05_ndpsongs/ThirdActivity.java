@@ -1,5 +1,6 @@
 package com.myapplicationdev.android.p05_ndpsongs;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ThirdActivity extends AppCompatActivity {
@@ -80,14 +82,54 @@ public class ThirdActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper dbh = new DBHelper(ThirdActivity.this);
-                int result = dbh.deleteSong(currentSong.getId());
-                if (result>0){
-                    Toast.makeText(ThirdActivity.this, "Song deleted", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(ThirdActivity.this, "Delete failed", Toast.LENGTH_SHORT).show();
-                }
+
+                AlertDialog.Builder myBulider = new AlertDialog.Builder(ThirdActivity.this);
+                myBulider.setTitle("Danger");
+                myBulider.setMessage("Are you sure you want to delete the island\n" + currentSong.getTitle());
+                myBulider.setCancelable(false);
+
+                myBulider.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBHelper dbh = new DBHelper(ThirdActivity.this);
+                        int result = dbh.deleteSong(currentSong.getId());
+                        if (result>0){
+                            Toast.makeText(ThirdActivity.this, "Song deleted", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(ThirdActivity.this, "Delete failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                myBulider.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder cancelBuiler = new AlertDialog.Builder(ThirdActivity.this);
+                        cancelBuiler.setTitle("Danger");
+                        cancelBuiler.setMessage("Are you sure you want to discard the changes");
+                        cancelBuiler.setCancelable(false);
+
+                        cancelBuiler.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+
+                        cancelBuiler.setNegativeButton("DO NOT DISCARD", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        AlertDialog myDialog = cancelBuiler.create();
+                        myDialog.show();
+                    }
+                });
+
+                AlertDialog myDialog = myBulider.create();
+                myDialog.show();
             }
         });
 
@@ -97,6 +139,8 @@ public class ThirdActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
 
     }
 
